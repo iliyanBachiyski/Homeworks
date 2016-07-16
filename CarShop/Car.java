@@ -7,14 +7,20 @@ public class Car {
 	private String color;
 	private int currentGear = 1;
 	private Person owner;
+	
+	public String getModel() {
+		return model;
+	}
+
 	private int maxGear = 5;
 	private int price;
 	private boolean isSportCar;
 	
-	Car(String model , String color , boolean isSportCar){
+	Car(String model , String color , boolean isSportCar , int maxSpeed){
 		setModel(model);
 		setColor(color);
 		this.isSportCar = isSportCar;
+		this.maxSpeed = maxSpeed;
 		if(this.isSportCar){
 			this.maxGear = 6;
 		}
@@ -24,7 +30,19 @@ public class Car {
 		return price;
 	}
 	
+	public int getCurrentSpeed() {
+		return currentSpeed;
+	}
+	
+	public int getMaxSpeed() {
+		return maxSpeed;
+	}
+	
+	
 	public Person getOwner() {
+		if(this.owner == null){
+			return null;
+		}
 		return owner;
 	}
 	
@@ -54,6 +72,7 @@ public class Car {
 		}
 		if(this.currentSpeed<this.maxSpeed){
 			this.currentSpeed+=10;
+			System.out.println("Your speed now is " + this.currentSpeed);
 		}
 	}
 	
@@ -97,6 +116,7 @@ public class Car {
 		}
 		if(color!=null && !(color.isEmpty()) ){
 			this.color = color;
+			System.out.println("Now your color is " + this.color);
 		}
 	}
 	
@@ -114,7 +134,7 @@ public class Car {
 		}
 		if(this.isSportCar){
 			coef +=0.05;
-		}
+		} 
 		return metalPrice*coef;
 	}
 	

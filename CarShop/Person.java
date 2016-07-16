@@ -10,10 +10,6 @@ public class Person {
 		private double money;
 		private Car ownCar;
 		
-		public void setOwnCar(Car ownCar) {
-			this.ownCar = ownCar;
-		}
-
 		Person(){
 			this.age = 0 ;
 			this.weight = 4;
@@ -35,8 +31,21 @@ public class Person {
 		}
 		
 		
+		public void setOwnCar(Car ownCar) {
+			this.ownCar = ownCar;
+		}
+
+		
+		public Car getOwnCar() {
+			return ownCar;
+		}
+		
+		
 		public String getName() {
-			return name;
+			if(this.name==null){
+				return null;
+			}
+				return name;
 		}
 
 		public int getAge() {
@@ -71,7 +80,7 @@ public class Person {
 			}
 			System.out.println("You don't have enough money!");
 		}
-		
+
 		double sellCarForScrap(Car c){
 			this.ownCar = null;
 			System.out.println("Your car go for scrap!");
