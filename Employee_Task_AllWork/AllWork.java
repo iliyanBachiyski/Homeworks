@@ -13,37 +13,39 @@ public class AllWork{
 		this.currentUnassignedTask = -1;
 	}
 	
-	void addTask(){
-		
-		for (int i = 0; i < tasks.length; i++) {
-			if(tasks[i]==null){
-				System.out.println("Insert Task Name: ");
-				String name = sc.nextLine();
-				System.out.println("Insert Working Hour: ");
-				int workingHours = sc.nextInt();
-				tasks[i] = new Task(name, workingHours);
-				System.out.println("Task Added!");
-				return;
+	void addTask(Task newTask){
+		if(newTask!=null){
+			for (int i = 0; i < tasks.length; i++) {
+				if(tasks[i]==null){
+						tasks[i] = newTask;
+						System.out.println("Task Added!");
+						return;
+					
+				}
 			}
+			System.out.println("No more free spaces!");
 		}
 	}
 	
 	Task getNextTask(){
-		if(currentUnassignedTask == (tasks.length-1) ){
-			System.out.println("No more tasks!");
+		
+		if(currentUnassignedTask >= (tasks.length-1) ){
+			System.out.print("No more tasks!");
 			return null;
 		}
-		this.currentUnassignedTask++;
+		currentUnassignedTask++;
 		return tasks[currentUnassignedTask];
 	}
 	
-	void isAllWorkDone(){
+	boolean isAllWorkDone(){
 		for (int i = 0; i < tasks.length; i++) {
-			if(tasks[i].getWorkingHours()!=0){
-				System.out.println("You have unfinished task!");
-				return;
+			if(tasks[i]==null){
+				break;
 			}
+				if(tasks[i].getWorkingHours()!=0){
+					return false;
+				}
 		}
-		System.out.println("All tasks are finished!");
+		return true;
 	}
 }

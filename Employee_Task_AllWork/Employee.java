@@ -4,6 +4,7 @@ public class Employee {
 	private Task curentTask;
 	private int hoursLeft;
 	private AllWork allWork;
+	public static int day = 1;
 	
 	Employee(String name) {
 		setHoursLeft();
@@ -25,68 +26,111 @@ public class Employee {
 	}
 
 	protected void setCurentTask() {
-		this.curentTask = allWork.getNextTask();
+		if(allWork!=null){
+			for (int i = 0; i < allWork.tasks.length; i++) {
+				if(allWork.tasks[i]==null){
+					System.out.println("There are no tasks!");
+					return;
+				}
+				if(allWork.tasks[i].getWorkingHours()==0){
+					continue;
+				}
+				if(allWork.tasks[i].getWorkingHours()>0){
+					this.curentTask = allWork.tasks[i];
+					return;
+				}
+			}
+			
+		}
+		System.out.println("There are no more tasks!");
 	}
 
 	private void setHoursLeft() {
 		this.hoursLeft = 8;
 	}
 	
-	void work(){
-		
-		if(this.getHoursLeft() ==8){
-			setCurentTask();
-		}
-		
-		if(getHoursLeft()==0){
-			System.out.println("The Employee is no more hours left!");
-			return;
-		}
-		
-		if(curentTask.getWorkingHours()==0){
-			System.out.println("The current task is finished!");
-			this.curentTask = allWork.getNextTask();
-			return;
-		}
-		
-		if(curentTask.getWorkingHours() == getHoursLeft()){
-			curentTask.setWorkingHours(0);
-			this.hoursLeft = 0;
-			System.out.println("The employee no more working hours left and current task is finished!");
-			return;
-		}
-		if(curentTask.getWorkingHours()>getHoursLeft()){
-			curentTask.setWorkingHours( (curentTask.getWorkingHours()) - (getHoursLeft() ));
-			this.hoursLeft = 0;
-			System.out.println("The employee no more working hours left");
-			return;
-		}
-		if(curentTask.getWorkingHours()<getHoursLeft()){
-			this.hoursLeft = (getHoursLeft() )-(curentTask.getWorkingHours());
-			curentTask.setWorkingHours(0);
-			System.out.println("The curent task is finished!");
-			this.curentTask = allWork.getNextTask();
-			return;
+	protected void setAllWork(AllWork allWork){
+		if(allWork != null){
+			this.allWork = allWork;
 		}
 	}
 	
-	void startWorkingDay(){
-		setHoursLeft();
-		this.allWork.currentUnassignedTask = -1;
-		this.allWork.freePlacesForTasks = 10;
-		for (int i = 0; i < this.allWork.tasks.length; i++) {
-			if(this.allWork.tasks[i].getWorkingHours() != 0 ){
+	AllWork getAllWork(){
+		return this.allWork;
+	}
+	
+	void work(){
+		
+			
+			if(this.getHoursLeft() == 8){
+				setCurentTask();
+			}
+			
+			if(getHoursLeft() == 0){
+				System.out.println("The Employee" + this.getName() + " is no more hours left!");
 				return;
 			}
+			
+			if(curentTask.getWorkingHours() == getHoursLeft()){
+				
+				if(curentTask.getWorkingHours()==0 && getHoursLeft()== 0 ){
+					System.out.println("There are no tasks!");
+					return;
+				}
+				System.out.println("The employee " + this.getName() +  " start working on " + this.curentTask.getName());
+				curentTask.setWorkingHours(0);
+				this.hoursLeft = 0;
+				System.out.println("The employee " + this.getName() +  " no more working hours left and current task is finished!");
+				return;
+			}
+			if(curentTask.getWorkingHours()>getHoursLeft()){
+				System.out.println("The employee " + this.getName() +  " start on working " + this.curentTask.getName());
+				curentTask.setWorkingHours( (curentTask.getWorkingHours()) - (getHoursLeft() ));
+				this.hoursLeft = 0;
+				System.out.println("The employee " + this.getName() +  " no more working hours left");
+				return;
+			}
+			if(curentTask.getWorkingHours()<getHoursLeft()){
+				System.out.println("The employee " + this.getName() +  " start working on " + this.curentTask.getName());
+				this.hoursLeft = (getHoursLeft() )-(curentTask.getWorkingHours());
+				curentTask.setWorkingHours(0);
+				System.out.println("The curent task is finished!");
+				this.setCurentTask();
+				if(allWork.isAllWorkDone()==false){
+					this.work();
+				}
+				return;
+			}
+		
+		System.out.println("There are no tasks!");
+	}
+	
+	void startWorkingDay(){
+		
+		setHoursLeft();
+		if(this.allWork!=null){
+			for (int i = 0; i < this.allWork.tasks.length; i++) {
+				if(this.allWork.tasks[i].getWorkingHours() != 0 ){
+					return;
+				}
+			}
+			this.allWork.currentUnassignedTask = -1;
+			this.allWork.freePlacesForTasks = 10;
+			this.allWork.tasks = new Task[10];
+			System.out.println("New working Day starts!");
+			return;
+			
 		}
-		this.allWork.tasks = new Task[10];
+		System.out.println("There are no tasks!");
 	}
 	
 	void showReport(){
 		System.out.println("Name: " + getName());
-		System.out.println("Curent task: " + curentTask.getName());
-		System.out.println("Hours left: " + this.getHoursLeft());
-		System.out.println("Curent task hours left: " + curentTask.getWorkingHours());
+		if(this.curentTask != null){
+			System.out.println("Curent task: " + curentTask.getName());
+			System.out.println("Curent task hours left: " + curentTask.getWorkingHours());
+		}
+		System.out.println("Working hours left: " + this.getHoursLeft());
 	}
 	
 	

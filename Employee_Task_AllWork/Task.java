@@ -1,12 +1,8 @@
-public class Task {
+
+public abstract class Task {
 	
 	private String name;
 	private int workingHours;
-	
-	Task(String name , int workingHours){
-		setName(name);
-		setWorkingHours(workingHours);
-	}
 	
 	public String getName() {
 		return name;
@@ -15,7 +11,7 @@ public class Task {
 		return workingHours;
 	}
 
-	public void setName(String name) {
+	protected void setName(String name) {
 		if(name!=null){
 			this.name = name;
 		}
